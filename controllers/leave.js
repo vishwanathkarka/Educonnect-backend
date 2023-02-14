@@ -7,7 +7,6 @@ exports.addLeave = BigPromise(async(req,res,next)=> {
     const permission = await Leave.create(req.body);
     permission.userId = req.user.id;
     permission.save({ validateBeforeSave: false })
-  
    return  res.status(200).json({
       status: true,
       permission,
@@ -42,6 +41,11 @@ exports.viewStudent  = BigPromise(async(req,res,next)=>{
     return  res.status(200).json({
         status: true,
         permission, 
-        
       });
 })
+
+
+// let resultperPage = req.query.result;
+//     const skipVal = resultperPage * (currentPage - 1)
+//     const attendanceList = await Attendance.find(req.body).limit(resultperPage).skip(skipVal);;
+    

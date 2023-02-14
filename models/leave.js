@@ -7,10 +7,8 @@ const leave = new mongoose.Schema({
     },
     userId:{
         type: mongoose.Schema.ObjectId,
-        ref: 'user',
-       
+        ref: 'user',  
     },
-  
     subject:{
         type:String,
         maxlength: [20, "password length should less than 20  "],
@@ -39,9 +37,7 @@ const leave = new mongoose.Schema({
     },
     role:{
         type:String
-    }
-
-    
+    }    
 })
 
 module.exports = mongoose.model("leave",leave)

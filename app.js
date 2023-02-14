@@ -2,6 +2,7 @@ const express = require("express")
 const app = express()
 const userRoute = require("./routers/user")
 const leaveRoute = require("./routers/leave")
+const attendanceRoute = require("./routers/attendance")
 const fileUpload = require("express-fileupload")
 const cookieParser = require("cookie-parser")
 
@@ -22,4 +23,5 @@ app.get("/signuptest", function (req, res) {
 //api route
 app.use("/api/v1",userRoute)
 app.use("/api/v1",leaveRoute) 
+app.use("/api/v1",attendanceRoute) 
 module.exports = app;
