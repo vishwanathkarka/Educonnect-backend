@@ -38,6 +38,9 @@ const usermodel = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
         ref: 'user',
   },
+  subject:{
+    type:String
+  },
   photo: {
     id: {
       type: String,
