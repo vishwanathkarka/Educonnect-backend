@@ -12,8 +12,15 @@ const sittingArrangement = require("./routers/sittingArranagment")
 const homework =require("./routers/homework")
 const payment = require("./routers/payment")
 const examResult = require("./routers/examResult")
+const department = require("./routers/department")
+const section = require("./routers/section")
+var cors = require('cors')
 
+app.use(express.json());
+app.use(cors())
+app.use(express.urlencoded({ extended: true}));
 
+app.use(express.json());
 app.set("view engine", "ejs");
 app.use(fileUpload({
     useTempFiles : true,
@@ -21,6 +28,7 @@ app.use(fileUpload({
 }));
 app.use(cookieParser())
 app.use(express.json())
+
 app.get("/",(req,res)=>{
     res.send("hello")
 })
@@ -37,4 +45,6 @@ app.use("/api/v1",sittingArrangement)
 app.use("/api/v1",timeTable) 
 app.use("/api/v1",payment) 
 app.use("/api/v1",examResult) 
+app.use("/api/v1",department) 
+app.use("/api/v1",section) 
 module.exports = app;

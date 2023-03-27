@@ -7,41 +7,78 @@ const cookieToken = require("../util/cookieToken")
 
 
 //signup
-exports.Signup = BigPromise(async(req,res,next)=>{
-    const {name,email,password,role,sections,departments,phoneNo,student_email,parent_email} = req.body
-  //checking the email in DB
-   const user = await User.findOne({email});
-
-//    if exists
-if(user){
-   next(new CustomError("Email already exited ",400))
+exports.findEmail = BigPromise(async(req,res,next)=>{
+    const {email,role} = req.body;
+ 
+  
+     let userEmailExist = await  User.findOne({role,email})
+ if(userEmailExist){
+      res.status(200).json({
+        success:true,
+        userEmailExist
+    })
 }
+else{
+    res.status(200).json({
+        success:false,
 
-   if(!(name|| email|| password || role || departments )){
-    next(new CustomError("Name email and password is mandatory",400));
-   } 
-   if(!req.files){
-    next(new CustomError("photo is mandatory",400));
+    })
+}
+})
+
+
+exports.Signup = BigPromise(async(req,res,next)=>{
+ console.log("&&&****"+req.body.data);
+ const userData =  JSON.parse(req.body.data)
+ console.log(userData)
+    const {firstName,lastName,email,password,role,phoneNo,parentEmail,studentEmail} = userData;
+  //checking the email in DB
+//  let eee = JSON.parse(req.body.data[0])
+//  console.log(eee.email)
+//  let jj = JSON.stringify(req.body.data)
+//  console.log(jj.email)
+//    const user = await User.findOne({email});
+//    if exists
+
+// if(user){
+//   return next(new CustomError("Email already exited ",400))
+   
+// }
+
+//    if(!(firstName || lastName|| email|| password || role || departments )){
+//     return next(new CustomError("Name email and password is mandatory",400));
+   
+// } 
+   if(req.files.photo){
+    // return next(new CustomError("photo is mandatory",400));
+   
+    
+   
+  
    }
 
-console.log(req.files)
 // uploading photo
-let result = await cloudinary.v2.uploader.upload(req.files.photo.tempFilePath,{
+console.log("45566*******((()))))))***********"+req.files.photo);
+const photo = req.files.photo
+console.log("*******((()))))))***********"+photo);
+let result = await cloudinary.v2.uploader.upload(photo.tempFilePath,{
     folder:"users",
     width:150,
     crop:"scale"
             })
-if(role == "parent"){
-    const userData = await  User.find({"email":student_email})
+console.log("***)))9990000"+result)
+if(role == "student"){
+    // const userData = await  User.find({"email":parent_email})
 
     const userCreated = await User.create({
-        name,
+        firstName,
+        lastName,
         email,
         password,
        role,
-       student_email,
+       parentEmail,
         phoneNo,
-        student_id:userData._id,
+        // student_id:userData._id,
         photo:{
             id:result.public_id,
             secure_url :result.secure_url
@@ -49,31 +86,29 @@ if(role == "parent"){
     
     })
 
-    if(!student_email){
-        next(new CustomError("Parent_email"))
-    }
-    for(let val of departments){
-        userCreated.departments.push(val);
-    }
+    // if(!parent_email){
+    //     return  next(new CustomError("Parent_email"))
+    // }
+    // for(let val of departments){
+    //     userCreated.departments.push(val);
+    // }
     
-    for(let sec of sections){
-        userCreated.sections.push(sec);
-    }
+    // for(let sec of sections){
+    //     userCreated.sections.push(sec);
+    // }
     
     await userCreated.save({ validateBeforeSave: false })
     
-    res.status(200).json({
-        success:true,
-        userCreated
-    }) 
+ 
   }
 else{
 const userCreated = await User.create({
-    name,
+   firstName,
+   lastName,
     email,
     password,
    role,
-   student_email,
+   studentEmail,
     phoneNo,
     photo:{
         id:result.public_id,
@@ -82,16 +117,16 @@ const userCreated = await User.create({
 
 })
  
-for(let val of departments){
-    userCreated.departments.push(val);
-}
+// for(let val of departments){
+//     userCreated.departments.push(val);
+// }
 
-for(let sec of sections){
-    userCreated.sections.push(sec);
-}
+// for(let sec of sections){
+//     userCreated.sections.push(sec);
+// }
 
 await userCreated.save({ validateBeforeSave: false })
-
+// res.send("hello")
 res.status(200).json({
     success:true,
     userCreated
@@ -101,17 +136,19 @@ res.status(200).json({
 })
 
 //login
-exports.login = BigPromise(async(req,res,next)=> {
+module.exports.login = BigPromise(async(req,res,next)=> {
     const {email,password} = req.body
     const user = await User.findOne({email}).select("+password")
-    if(!user){
-        next(new CustomError("Signup first then login",400));
-    }
+    console.log("*****)(()"+email)
+    // if(!user && !password){
+    //     return next(new CustomError(" email and password are required", 400));
+    // }
    let validatePassword = await user.isValidatePassword(password)
    if(!validatePassword){
-    next(CustomError("Wrong password Entered",400))
+    return next( new CustomError("Wrong password Entered",400));
+    
    }
-   cookieToken(user,res)
+   cookieToken(user,res);
 })
 
 exports.logout  = BigPromise(async(req,res,next)=> {
@@ -173,7 +210,8 @@ exports.getParents = BigPromise(async(req,res,next)=>{
     const {email}= req.body
     const user = await User.findOne({email})
     if(!user){
-        next( new CustomError("Enter Valid email",400));
+        return  next( new CustomError("Enter Valid email",400));
+        
     }
     res.status(200).json({
         success:true,

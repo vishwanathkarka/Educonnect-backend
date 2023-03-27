@@ -4,9 +4,13 @@ const bcrypt = require("bcryptjs");
 const Jwt = require("jsonwebtoken")
 
 const usermodel = new mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
-    required: [true, "Name is mandatory"],
+    // required: [true, "Name is mandatory"],
+  },
+  lastName: {
+    type: String,
+    // required: [true, "Name is mandatory"],
   },
   email: {
     type: String,
@@ -24,14 +28,13 @@ const usermodel = new mongoose.Schema({
     type: String,
     default: "user",
   },
-  parent_email:{
+  parentEmail:{
     type: String,
 
     validate: [validator.isEmail, "enter the email correctly"],
   },
-  student_email:{
+  studentEmail:{
     type: String,
-   
     validate: [validator.isEmail, "enter the email correctly"],
   },
   student_id :{
@@ -50,20 +53,30 @@ const usermodel = new mongoose.Schema({
       type: String,
     },
   },
-  sections: [
-  { section: String}
-  ],
-  departments: [
+  sections:  {
+    type: mongoose.Schema.ObjectId,
+    ref: 'department',
+  },
+  departments: 
     {
-    department: String,
+      type: mongoose.Schema.ObjectId,
+      ref: 'department',
     },
    
-],
   isLoginGoogle: {
     type: Boolean,
     default: false,
   },
   phoneNo: {
+    type: String,
+    maxlength: [10, "Number should be 10 digits"],
+    validate: [
+      validator.isMobilePhone,
+      "en-IN",
+      "enter the phone number correctly",
+    ],
+  },
+  parentPhoneNo: {
     type: String,
     maxlength: [10, "Number should be 10 digits"],
     validate: [
