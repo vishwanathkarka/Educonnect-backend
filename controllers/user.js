@@ -9,8 +9,6 @@ const cookieToken = require("../util/cookieToken")
 //signup
 exports.findEmail = BigPromise(async(req,res,next)=>{
     const {email,role} = req.body;
- 
-  
      let userEmailExist = await  User.findOne({role,email})
  if(userEmailExist){
       res.status(200).json({
@@ -31,7 +29,7 @@ exports.Signup = BigPromise(async(req,res,next)=>{
  console.log("&&&****"+req.body.data);
  const userData =  JSON.parse(req.body.data)
  console.log(userData)
-    const {firstName,lastName,email,password,role,phoneNo,parentEmail,studentEmail} = userData;
+    const {firstName,lastName,email,password,role,phoneNo,parentEmail,studentEmail,departments,sections,htno,gender} = userData;
   //checking the email in DB
 //  let eee = JSON.parse(req.body.data[0])
 //  console.log(eee.email)
@@ -45,15 +43,12 @@ exports.Signup = BigPromise(async(req,res,next)=>{
    
 // }
 
-//    if(!(firstName || lastName|| email|| password || role || departments )){
-//     return next(new CustomError("Name email and password is mandatory",400));
+   if(!(firstName || lastName|| email|| password || role || departments )){
+    return next(new CustomError("Name email and password is mandatory",400));
    
-// } 
-   if(req.files.photo){
-    // return next(new CustomError("photo is mandatory",400));
-   
-    
-   
+} 
+   if(!req.files.photo){
+    return next(new CustomError("photo is mandatory",400));
   
    }
 
@@ -67,10 +62,11 @@ let result = await cloudinary.v2.uploader.upload(photo.tempFilePath,{
     crop:"scale"
             })
 console.log("***)))9990000"+result)
+let userCreated;
 if(role == "student"){
     // const userData = await  User.find({"email":parent_email})
 
-    const userCreated = await User.create({
+   userCreated = await User.create({
         firstName,
         lastName,
         email,
@@ -78,6 +74,10 @@ if(role == "student"){
        role,
        parentEmail,
         phoneNo,
+        departments:[{department:departments}],
+        sections,
+        htno,
+        gender,
         // student_id:userData._id,
         photo:{
             id:result.public_id,
@@ -85,24 +85,24 @@ if(role == "student"){
         }
     
     })
-
-    // if(!parent_email){
+console.log("&&&&&&&^^^^&&&"+userCreated)
+    // if(!parentEmail){
     //     return  next(new CustomError("Parent_email"))
     // }
     // for(let val of departments){
-    //     userCreated.departments.push(val);
+    //     userCreated.departments.department.push(val);
     // }
     
     // for(let sec of sections){
-    //     userCreated.sections.push(sec);
+    //     userCreated.sections.department.push(sec);
     // }
     
-    await userCreated.save({ validateBeforeSave: false })
+   
     
  
   }
 else{
-const userCreated = await User.create({
+ userCreated = await User.create({
    firstName,
    lastName,
     email,
@@ -110,13 +110,14 @@ const userCreated = await User.create({
    role,
    studentEmail,
     phoneNo,
+    gender,
     photo:{
         id:result.public_id,
         secure_url :result.secure_url
     }
 
 })
- 
+}
 // for(let val of departments){
 //     userCreated.departments.push(val);
 // }
@@ -125,13 +126,13 @@ const userCreated = await User.create({
 //     userCreated.sections.push(sec);
 // }
 
-await userCreated.save({ validateBeforeSave: false })
+
 // res.send("hello")
 res.status(200).json({
     success:true,
     userCreated
 })
-}
+
 
 })
 
@@ -237,6 +238,16 @@ res.status(200).json({
 exports.getAllUserRole = BigPromise(async(req,res,next)=>{
     const {role} = req.body;
     const user = await User.find({role});
+    res.status(200).json({
+        success:true,
+        user
+    })
+})
+
+
+exports.getAllUserForAttendance = BigPromise(async(req,res,next)=>{
+    const {section,department} = req.body;
+    const user = await User.find({section,department})
     res.status(200).json({
         success:true,
         user

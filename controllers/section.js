@@ -9,7 +9,6 @@ const alreadyExistSec = await Section.findOne({section});
 if(alreadyExistSec){
     next( new CustomError("Already Department existed", 400) );
 }
-
     const Sec =await Section.create({section});
     res.status(200).json({
         success:true,

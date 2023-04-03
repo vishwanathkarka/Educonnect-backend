@@ -12,6 +12,15 @@ const usermodel = new mongoose.Schema({
     type: String,
     // required: [true, "Name is mandatory"],
   },
+  htno:{
+    type:String,
+
+  },
+  gender:{
+    type: String,
+    required: [true, "Email in mandatory"],
+    enum: ['male', 'female'],
+  },
   email: {
     type: String,
     required: [true, "Email in mandatory"],
@@ -53,15 +62,15 @@ const usermodel = new mongoose.Schema({
       type: String,
     },
   },
-  sections:  {
+  sections:  [{
     type: mongoose.Schema.ObjectId,
     ref: 'department',
-  },
+  }],
   departments: 
-    {
+    [{department:{
       type: mongoose.Schema.ObjectId,
-      ref: 'department',
-    },
+      ref: 'Department',
+    }}],
    
   isLoginGoogle: {
     type: Boolean,
