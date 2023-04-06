@@ -1,6 +1,7 @@
 const BigPromise = require("../middleware/Bigpromise")
 const Attendance = require("../models/attendance")
 const WhereClause = require("../util/whereClause")
+
 // add attendance
 exports.addattendance = BigPromise(async(req,res,next)=>{
     const {userId,AttendanceDate,isPresent} = req.body

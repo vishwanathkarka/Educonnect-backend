@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
-const Jwt = require("jsonwebtoken")
+const Jwt = require("jsonwebtoken");
 
 const usermodel = new mongoose.Schema({
   firstName: {
@@ -12,14 +12,13 @@ const usermodel = new mongoose.Schema({
     type: String,
     // required: [true, "Name is mandatory"],
   },
-  htno:{
-    type:String,
-
+  htno: {
+    type: String,
   },
-  gender:{
+  gender: {
     type: String,
     required: [true, "Email in mandatory"],
-    enum: ['male', 'female'],
+    enum: ["male", "female"],
   },
   email: {
     type: String,
@@ -37,21 +36,21 @@ const usermodel = new mongoose.Schema({
     type: String,
     default: "user",
   },
-  parentEmail:{
+  parentEmail: {
     type: String,
 
     validate: [validator.isEmail, "enter the email correctly"],
   },
-  studentEmail:{
+  studentEmail: {
     type: String,
     validate: [validator.isEmail, "enter the email correctly"],
   },
-  student_id :{
+  student_id: {
     type: mongoose.Schema.ObjectId,
-        ref: 'user',
+    ref: "user",
   },
-  subject:{
-    type:String
+  subject: {
+    type: String,
   },
   photo: {
     id: {
@@ -62,16 +61,21 @@ const usermodel = new mongoose.Schema({
       type: String,
     },
   },
-  sections:  [{
-    type: mongoose.Schema.ObjectId,
-    ref: 'department',
-  }],
-  departments: 
-    [{department:{
+  sections: [
+    {
       type: mongoose.Schema.ObjectId,
-      ref: 'Department',
-    }}],
-   
+      ref: "Section",
+    },
+  ],
+  departments: [
+    {
+      department: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Department",
+      },
+    },
+  ],
+
   isLoginGoogle: {
     type: Boolean,
     default: false,
@@ -112,13 +116,10 @@ usermodel.pre("save", async function (next) {
 usermodel.methods.isValidatePassword = async function (pass) {
   return await bcrypt.compare(pass, this.password);
 };
-usermodel.methods.getJwtToken = async function(){
-  return await Jwt.sign({id:this._id},process.env.JWT_SCREATE,{
-    expiresIn:process.env.JWT_EXPIRY
-  })
-}
-
-
-
+usermodel.methods.getJwtToken = async function () {
+  return await Jwt.sign({ id: this._id }, process.env.JWT_SCREATE, {
+    expiresIn: process.env.JWT_EXPIRY,
+  });
+};
 
 module.exports = mongoose.model("user", usermodel);

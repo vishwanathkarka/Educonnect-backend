@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const Departments = mongoose.Schema({
-    department:{
-type:String,
-    }
-})
+  department: {
+    type: String,
+  },
+});
 
-module.exports = mongoose.model("Department",Departments)
+module.exports = mongoose.model("Department", Departments);

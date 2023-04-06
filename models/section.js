@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const Section = mongoose.Schema({
-    section:{
-type:String,
-    }
-})
+  section: {
+    type: String,
+  },
+});
 
-module.exports = mongoose.model("Section",Section)
+module.exports = mongoose.model("Section", Section);
