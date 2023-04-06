@@ -20,3 +20,15 @@ success:true,
 products
     })
 })
+
+// adding bulk attendance
+exports.BulkAttendanceAdd = BigPromise(async(req,res,next)=>{
+    
+    const att = await Attendance.insertMany(req.body.data)
+    res.status(200).json({
+        success:true,
+        att
+    })
+})
+
+

@@ -4,9 +4,9 @@ const {addLeave,viewLeave,viewStudent,viewLeaveLecture}= require("../controllers
 const {isLogined,customRole} = require("../middleware/user")
 
 router.route("/addleave").post(isLogined ,addLeave)
-router.route("/viewleaveuser").post(isLogined ,viewLeave);
-router.route("/viewleavelecture").post(isLogined ,customRole("admin"),viewLeaveLecture);
-router.route("/viewleavestudent").get(isLogined ,customRole("parent"),viewStudent);
+router.route("/viewleaveuser").get(viewLeave);
+router.route("/viewleavelecture").get(isLogined ,customRole("lecture"),viewLeaveLecture);
+router.route("/viewleavestudent").get(isLogined ,customRole("lecture"),viewStudent);
 
 // customRole
 module.exports = router;

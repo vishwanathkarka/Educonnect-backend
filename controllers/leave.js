@@ -1,6 +1,6 @@
 const BigPromise = require("../middleware/Bigpromise")
 const Leave = require("../models/leave");
-const WhareClause = require("../util/whereClause")
+const WhereClause = require("../util/whereClause")
 const User = require("../models/user")
 
 exports.addLeave = BigPromise(async(req,res,next)=> {
@@ -15,14 +15,27 @@ exports.addLeave = BigPromise(async(req,res,next)=> {
 
 //get all the user leaves
 exports.viewLeave = BigPromise(async(req,res,next)=>{
-  const {pageno} = req.body
-  const skipVal = 7 * (pageno - 1);
-  const products =  await Leave.find({"role":"user"}).limit(10).skip(skipVal).populate("userId").exec();
+  // const {pageno} = req.body
+  const resultPerPage = 4;
+  // const skipVal = 7 * (pageno - 1);
+
+  let leaveObj = new WhereClause( Leave.find({"role":"user"}), req.query)
+  .search()
+  .filter();
+  let  leave = await leaveObj.base;
+  const filteredLeaveCount = leave.length;
+  leaveObj.pager(resultPerPage);
+  leaves= await leaveObj.base.clone().populate("userId").exec();
+
+  // const permission =  await Leave.find({"role":"user"}).limit(10).skip(skipVal).populate("userId").exec();
 
     return  res.status(200).json({
         status: true,
-        products, 
+        leaves,
+        filteredLeaveCount,
+      
       });
+     
 });
 
 // get all the lecture leaves

@@ -75,7 +75,7 @@ if(role == "student"){
        parentEmail,
         phoneNo,
         departments:[{department:departments}],
-        sections,
+        sections:[{section:sections}],
         htno,
         gender,
         // student_id:userData._id,

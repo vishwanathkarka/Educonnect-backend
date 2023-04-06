@@ -18,7 +18,7 @@ if(alreadyExistSec){
 
 
 )
-
+// find all the section
 exports.ListSectionItem = BigPromise(async(req,res,next)=>{
 
     const listOfSection = await Section.find();
@@ -31,3 +31,16 @@ exports.ListSectionItem = BigPromise(async(req,res,next)=>{
     
     
     )
+
+    exports.ListSectionItem = BigPromise(async(req,res,next)=>{
+const{id}= req.body;
+        const listOfSection = await Section.find({"department":id}).populate("").exec()
+        
+            res.status(200).json({
+                success:true,
+                listOfSection
+             })
+        }
+        
+        
+        )

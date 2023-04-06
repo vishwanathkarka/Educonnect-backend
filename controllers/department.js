@@ -25,6 +25,16 @@ exports.ListDepartmentItem = BigPromise(async(req,res,next)=>{
             listOfDepartment
          })
     }
-    
-    
     )
+
+    exports.ListDepartmentItemSpecific = BigPromise(async(req,res,next)=>{
+const {department } = req.body;
+        const listOfDepartment = await Department.find({"_id":department})
+        // .populate("department").exec();
+        
+            res.status(200).json({
+                success:true,
+                listOfDepartment
+             })
+        }
+        )

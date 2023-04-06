@@ -47,4 +47,5 @@ app.use("/api/v1",payment)
 app.use("/api/v1",examResult) 
 app.use("/api/v1",department) 
 app.use("/api/v1",section) 
+
 module.exports = app;
