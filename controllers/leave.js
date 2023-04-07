@@ -63,6 +63,17 @@ exports.viewStudent = BigPromise(async (req, res, next) => {
   });
 });
 
+// update the permission
+exports.updatePermission = BigPromise(async(req,res,next)=>{
+  const id = req.params.id
+  const {isParentApproved,isLectureApproved}= req.body;
+  const permission = await Leave.findByIdAndUpdate({"_id":id},{isParentApproved,isLectureApproved})
+  return res.status(200).json({
+    status: true,
+    permission,
+  })
+})
+
 // let resultperPage = req.query.result;
 //     const skipVal = resultperPage * (currentPage - 1)
 //     const attendanceList = await Attendance.find(req.body).limit(resultperPage).skip(skipVal);;

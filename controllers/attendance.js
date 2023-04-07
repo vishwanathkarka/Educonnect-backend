@@ -15,10 +15,22 @@ exports.addattendance = BigPromise(async(req,res,next)=>{
 // get attendance
 exports.getAttendance = BigPromise(async(req,res,next)=>{
     const attendanceList =  new WhereClause(Attendance.find(req.body),req.query).pager(2) 
-    let products = await attendanceList.base.populate("userId").exec();
+    let att = await attendanceList.base.populate("userId").exec();
     res.status(200).json({
 success:true,
-products
+att
+    })
+})
+
+// getting Individual Attendance
+exports.getIndividualAttendance = BigPromise(async(req,res,next)=>{
+    // const attendanceList =  new WhereClause(Attendance.find(req.body),req.query).pager(2) 
+    const {id} = req.params;
+    let att = await Attendance.find({"userId":id})
+    res.status(200).json({
+success:true,
+id:id,
+att
     })
 })
 

@@ -24,12 +24,12 @@ const leave = new mongoose.Schema({
     type: Number,
   },
   isParentApproved: {
-    type: Boolean,
-    default: false,
+    type: Number,
+    default: 0,
   },
   isLectureApproved: {
-    type: Boolean,
-    default: false,
+    type: Number,
+    default: 0,
   },
   role: {
     type: String,
