@@ -20,6 +20,7 @@ const attendance = mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "user",
   },
+  
 });
 
 module.exports = mongoose.model("Attendance", attendance);
