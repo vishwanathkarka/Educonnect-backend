@@ -1,5 +1,5 @@
 const BigPromise = require("../middleware/Bigpromise");
-
+const Payment = require("../models/payment")
 const express = require("express");
 const app = express();
 const stripe = require("stripe")(
@@ -30,3 +30,18 @@ exports.paymentcollegefree = BigPromise(async (req, res, next) => {
     session,
   });
 });
+
+
+exports.addNewPayment = BigPromise(async (req, res, next) => {
+const{sid,amount,lastDay,title,description} = req.body;
+const lid = req.user.id
+const newPayment = await Payment.create({sid,lid,amount,lastDay,description,title});
+
+
+
+newPayment.save({ validateBeforeSave: false });
+res.status(200).json({
+  success: true,
+ newPayment
+});
+})

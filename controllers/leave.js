@@ -74,6 +74,17 @@ exports.updatePermission = BigPromise(async(req,res,next)=>{
   })
 })
 
+//deleting the permission which is in pending state
+exports.deletePermission = BigPromise(async(req,res,next)=>{
+  const id = req.params.id
+  
+  const permission = await Leave.findByIdAndDelete({"_id":id})
+  return res.status(200).json({
+    status: true,
+    permission,
+  })
+})
+
 // let resultperPage = req.query.result;
 //     const skipVal = resultperPage * (currentPage - 1)
 //     const attendanceList = await Attendance.find(req.body).limit(resultperPage).skip(skipVal);;

@@ -13,7 +13,6 @@ exports.isLogined = async(req,res,next)=>{
      req.user  = await User.findById(userToken.id);
     
 next()
-
 }
 
 exports.customRole = (...roles)=>{

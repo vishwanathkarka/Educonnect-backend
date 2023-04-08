@@ -26,7 +26,12 @@ att
 exports.getIndividualAttendance = BigPromise(async(req,res,next)=>{
     // const attendanceList =  new WhereClause(Attendance.find(req.body),req.query).pager(2) 
     const {id} = req.params;
-    let att = await Attendance.find({"userId":id})
+    let att = await Attendance.find({"userId":id}).populate("lectureId")
+    .exec();
+    // att.lectureId.email = undefined
+    // att.lectureId.phone = undefined
+    // att.lectureId.timestamp = undefined
+    // att.lectureId.isLoginGoogle = undefined
     res.status(200).json({
 success:true,
 id:id,
