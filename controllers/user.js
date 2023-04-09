@@ -258,3 +258,28 @@ exports.addDepartmentForUser =  BigPromise(async (req, res, next) => {
       user,
     });
   });
+
+  exports.addSectionInDepartment =  BigPromise(async (req, res, next) => {
+    const { section} = req.body;
+    const {id,department} = req.params
+    // const user = await User.findOneAndUpdate({"_id":id},{$push:{"departments[0]":{section}}});
+    const user = await User.findOne({"_id":id})
+    let value = null;
+    for(let i =0; i<user.departments.length; i++){
+        if(user.departments[i].department.toString() == department){
+value = i;
+break;
+        }
+    }
+    console.log(value)
+    console.log(user.departments.length)
+    console.log(user.departments[value].department.toString() == department)
+    if(value != null){
+    user.departments[value].section.push(...section)
+    user.save({ validateBeforeSave: false });
+    res.status(200).json({
+      success: true,
+      user,
+    });
+}
+  });
