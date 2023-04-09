@@ -61,19 +61,26 @@ const usermodel = new mongoose.Schema({
       type: String,
     },
   },
-  sections: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Section",
-    },
-  ],
+  // sections: [
+  //   {
+  //     type: mongoose.Schema.ObjectId,
+  //     ref: "Section",
+  //   },
+  // ],
   departments: [
     {
-      department: {
+  department:  {
         type: mongoose.Schema.ObjectId,
         ref: "Department",
-      },
+  
     },
+    section:[{
+      type: mongoose.Schema.ObjectId,
+  ref: "Section",
+  default:"641f48f11edf6915d2ba0f41"
+    }
+    ]
+  },
   ],
 
   isLoginGoogle: {

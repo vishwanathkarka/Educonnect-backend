@@ -22,7 +22,8 @@ exports.findEmail = BigPromise(async (req, res, next) => {
 });
 
 exports.Signup = BigPromise(async (req, res, next) => {
-  console.log("&&&****" + req.body.data);
+//   console.log("&&&****" + req.body.data);
+
   const userData = JSON.parse(req.body.data);
   console.log(userData);
   const {
@@ -81,8 +82,7 @@ exports.Signup = BigPromise(async (req, res, next) => {
       role,
       parentEmail,
       phoneNo,
-      departments: [{ department: departments }],
-      sections: [{ section: sections }],
+      departments:[{"department":departments ,"section":[sections,] }],
       htno,
       gender,
       // student_id:userData._id,
@@ -241,9 +241,20 @@ exports.getAllUserRole = BigPromise(async (req, res, next) => {
 // get all the user for attendance
 exports.getAllUserForAttendance = BigPromise(async (req, res, next) => {
   const { section, department } = req.body;
-  const user = await User.find({ section, department });
+  const user = await User.find({ section:[section] });
   res.status(200).json({
     success: true,
     user,
   });
 });
+
+
+exports.addDepartmentForUser =  BigPromise(async (req, res, next) => {
+    const { sections, departments} = req.body;
+    const {id} = req.params
+    const user = await User.findOneAndUpdate({"_id":id},{$push:{"departments":{departments,"section":sections}}});
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  });
