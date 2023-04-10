@@ -6,4 +6,4 @@ const Departments = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Department", Departments);
+module.exports = mongoose.model("Departments", Departments);

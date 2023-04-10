@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const Jwt = require("jsonwebtoken");
-
+const {Departments} = require("../models/department")
+const {Section} = require("../models/section")
 const usermodel = new mongoose.Schema({
   firstName: {
     type: String,
@@ -71,7 +72,7 @@ const usermodel = new mongoose.Schema({
     {
   department:  {
         type: mongoose.Schema.ObjectId,
-        ref: "Department",
+        ref: "Departments",
   
     },
     section:[{
@@ -129,4 +130,7 @@ usermodel.methods.getJwtToken = async function () {
   });
 };
 
+mongoose.model("Departments", Departments);
+mongoose.model("Section", Section);
 module.exports = mongoose.model("user", usermodel);
+

@@ -8,7 +8,7 @@ const cookieToken = require("../util/cookieToken");
 //signup
 exports.findEmail = BigPromise(async (req, res, next) => {
   const { email, role } = req.body;
-  let userEmailExist = await User.findOne({ role, email });
+  let userEmailExist = await User.findOne({ role, email }).populate("departments.Department").exec();
   if (userEmailExist) {
     res.status(200).json({
       success: true,
@@ -136,7 +136,7 @@ exports.Signup = BigPromise(async (req, res, next) => {
 //login
 module.exports.login = BigPromise(async (req, res, next) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select("+password").populate('departments.department').populate('departments.section').exec();;
   console.log("*****)(()" + email);
   // if(!user && !password){
   //     return next(new CustomError(" email and password are required", 400));
