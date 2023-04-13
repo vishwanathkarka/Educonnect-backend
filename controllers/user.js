@@ -241,7 +241,8 @@ exports.getAllUserRole = BigPromise(async (req, res, next) => {
 // get all the user for attendance
 exports.getAllUserForAttendance = BigPromise(async (req, res, next) => {
   const { section, department } = req.body;
-  const user = await User.find({ section:[section] });
+//   const user = await User.find({$pull:{"departments":{$in:[department,{"section":section}]}}});
+  const user = await User.find({"departments":{$elemMatch:{"department":department,"section":section}}})
   res.status(200).json({
     success: true,
     user,
@@ -250,9 +251,9 @@ exports.getAllUserForAttendance = BigPromise(async (req, res, next) => {
 
 
 exports.addDepartmentForUser =  BigPromise(async (req, res, next) => {
-    const { sections, departments} = req.body;
+    const { section, department} = req.body;
     const {id} = req.params
-    const user = await User.findOneAndUpdate({"_id":id},{$push:{"departments":{departments,"section":sections}}});
+    const user = await User.findOneAndUpdate({"_id":id},{$push:{"departments":{department,"section":section}}});
     res.status(200).json({
       success: true,
       user,

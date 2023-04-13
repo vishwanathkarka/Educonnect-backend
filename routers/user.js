@@ -11,7 +11,7 @@ router.route("/getusers").get(isLogined,getUser);
 router.route("/updaterole").put(isLogined,customRole("admin"),updateRole);
 router.route("/viewrole").post(isLogined,customRole("admin"),getUserRole);
 router.route("/getallroles").post(isLogined,customRole("admin"),getAllUserRole);
-router.route("/getalluserforattendance").get(getAllUserForAttendance);
+router.route("/getalluserforattendance").post(getAllUserForAttendance);
 router.route("/adddepartmentforuser/:id").put(addDepartmentForUser);
 router.route("/addsectionindepartment/:id/:department").put(addSectionInDepartment);
 
