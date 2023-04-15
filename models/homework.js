@@ -27,6 +27,9 @@ const homework = mongoose.Schema({
       type: String,
     },
   },
+  description:{
+    type: String,
+  },
   homeworkid: {
     type: mongoose.Schema.ObjectId,
     ref: "homework",
@@ -38,6 +41,14 @@ const homework = mongoose.Schema({
     secure_url: {
       type: String,
     },
+  },
+  department:{
+    type: mongoose.Schema.ObjectId,
+    ref:"department"
+  },
+  section:{
+    type: mongoose.Schema.ObjectId,
+    ref:"Section"
   },
   isSubmittedWork: {
     type: Boolean,

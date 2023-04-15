@@ -29,7 +29,7 @@ exports.ListDepartmentItem = BigPromise(async (req, res, next) => {
 //getting specific department with id passing
 exports.ListDepartmentItemSpecific = BigPromise(async (req, res, next) => {
   const { department } = req.body;
-  const listOfDepartment = await Department.find({ _id: department });
+  const listOfDepartment = await Department.find({ _id: department })
   // .populate("department").exec();
 
   res.status(200).json({

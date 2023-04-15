@@ -4,19 +4,21 @@ const CustomError = require("../util/customError");
 
 //adding exam marks
 exports.addExamMarks = BigPromise(async (req, res) => {
-  const { outOfMarks, studentMarks, subject, userId } = req.body;
+  const { outOfMarks, studentMarks, subject, userId,lectureId } = req.body;
   const addedResult = await ExamResult.create({
     outOfMarks,
     studentMarks,
     subject,
     userId,
-    lectureId: req.user._id,
+    lectureId,
+    // lectureId: req.user._id,
   });
   res.status(200).json({
     success: true,
     addedResult,
   });
 });
+
 
 //getting exam marks of the specific student
 exports.getStudentMarks = BigPromise(async (req, res, next) => {

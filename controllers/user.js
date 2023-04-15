@@ -171,6 +171,7 @@ exports.getAdmin = BigPromise(async (req, res, next) => {
 
 // get role user
 exports.getUser = BigPromise(async (req, res, next) => {
+    
   const user = await User.findOne({ role: "user" });
   res.status(200).json({
     success: true,
@@ -242,7 +243,9 @@ exports.getAllUserRole = BigPromise(async (req, res, next) => {
 exports.getAllUserForAttendance = BigPromise(async (req, res, next) => {
   const { section, department } = req.body;
 //   const user = await User.find({$pull:{"departments":{$in:[department,{"section":section}]}}});
-  const user = await User.find({"departments":{$elemMatch:{"department":department,"section":section}}})
+  const user = await User.find({"departments":{$elemMatch:{"department":department,"section":section}}}).populate({  path: "departments.department" })
+//   .populate({ path: "userId", populate: { path: "departments.department" } })
+  .exec();
   res.status(200).json({
     success: true,
     user,
@@ -284,3 +287,13 @@ break;
     });
 }
   });
+
+  exports.getuserInfoWithId =  BigPromise(async (req, res, next) => {
+    const {id} = req.params;
+    const user = await User.findOne({"_id":id})
+    res.status(200).json({
+        success:true,
+        user
+    })
+
+  })

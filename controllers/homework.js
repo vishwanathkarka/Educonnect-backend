@@ -5,18 +5,23 @@ const cloudinary = require("cloudinary");
 
 //lecture adding homework
 exports.addHomeworkLecture = BigPromise(async (req, res, next) => {
-  const { title, submissionDate } = req.body;
+  console.log(req.body.data)
+  const userData = JSON.parse(req.body.data);
+  const { title, submissionDate, description ,department,section } = userData;
   let workfile = await cloudinary.v2.uploader.upload(
     req.files.lectureworkFile.tempFilePath,
     {
       folder: "homework",
     }
   );
-  let lectureId = req.user._id;
+  // let lectureId = req.user._id;
   const homework = await Homework.create({
     title,
     submissionDate,
-    lectureId,
+    // lectureId,
+    description,
+    department,
+    section,
     lectureworkFile: {
       id: workfile.public_id,
       secure_url: workfile.secure_url,
@@ -27,6 +32,16 @@ exports.addHomeworkLecture = BigPromise(async (req, res, next) => {
     homework,
   });
 });
+
+// list the homework based on the section and department
+exports.getHomeWorks = BigPromise(async (req, res, next) => {
+const {section,department} = req.params;
+const Homeworks = await Homework.find({section,department});
+res.status(200).json({
+  status: true,
+  Homeworks,
+});
+})
 
 // adding homework student by lecture id
 exports.addHomeworkstudent = BigPromise(async (req, res, next) => {

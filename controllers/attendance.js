@@ -41,7 +41,8 @@ att
 
 // adding bulk attendance
 exports.BulkAttendanceAdd = BigPromise(async(req,res,next)=>{
-    
+    //DO remove the attendace already exists
+
     const att = await Attendance.insertMany(req.body.data)
     res.status(200).json({
         success:true,
