@@ -18,6 +18,10 @@ description:{
 payedDate:{
     type:Date
 } ,
+ispaid:{
+    type:Boolean,
+    default:false
+},
     amount:{
         type:Number,
         default:0,

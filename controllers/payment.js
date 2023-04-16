@@ -7,7 +7,10 @@ const stripe = require("stripe")(
 );
 
 exports.paymentcollegefree = BigPromise(async (req, res, next) => {
-  const { amount } = req.body;
+  // const { amount } = req.body;
+  const {id} = req.params
+  const payment = await Payment.findOne({"_id":id})
+  if(payment){
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
@@ -16,27 +19,60 @@ exports.paymentcollegefree = BigPromise(async (req, res, next) => {
           product_data: {
             name: "XYZ college free payment",
           },
-          unit_amount: amount * 100,
+          unit_amount: payment.amount * 100,
         },
         quantity: 1,
       },
     ],
     mode: "payment",
-    success_url: "http://localhost:4242/success",
-    cancel_url: "http://localhost:4242/cancel",
+    success_url: `http://localhost:3000/payment/pay/${id}/success`,
+    cancel_url: `http://localhost:3000/payment/pay/${id}/cancel`,
   });
+  const addingID = await Payment.findByIdAndUpdate({"_id":id},{"paymentId":session.id})
   res.status(200).json({
     success: true,
     session,
   });
+  }
+
+  return next(new CustomError("fake id entered", 400));
+ 
 });
+
+exports.checkstatus = BigPromise(async (req, res, next) => {
+  const {id} = req.params
+  const payment = await Payment.findOne({"sid":id})
+  const session = await stripe.checkout.sessions.retrieve(
+    // payment.paymentId
+    "cs_test_a1wA1FCSdDh6vOQ79KO2OpO5UaHqyVlwFCdJdtT0VSFPtMOG0XKOK5FObz"
+  );
+  console.log(session)
+let ispaid = null
+  if (session.payment_status === "paid") {
+  ispaid = true
+  
+  }
+  else{
+ispaid = false
+ 
+  }
+  const pay =  await Payment.findOneAndUpdate({"sid":id},{"ispaid":ispaid})
+  console.log(pay)
+  res.status(200).json({
+    success: true,
+    ispaid:ispaid,
+  });
+
+})
+
+// cs_test_a1aOkTwJuMfRTJIhLxKBSp31yloPs9OxK1YHU7dFWImomojkrB3ufVDXr5
 
 
 exports.addNewPayment = BigPromise(async (req, res, next) => {
 const{sid,amount,lastDay,title,description} = req.body;
-const lid = req.user.id
-const newPayment = await Payment.create({sid,lid,amount,lastDay,description,title});
-
+// const lid = req.user.id
+// const newPayment = await Payment.create({sid,lid,amount,lastDay,description,title});
+const newPayment = await Payment.create({sid,amount,lastDay,description,title});
 
 
 newPayment.save({ validateBeforeSave: false });
@@ -45,3 +81,16 @@ res.status(200).json({
  newPayment
 });
 })
+
+
+exports.findPaymentList = BigPromise(async (req, res, next) => {
+  const{sid} = req.params
+  // const lid = req.user.id
+  // const newPayment = await Payment.create({sid,lid,amount,lastDay,description,title});
+  const paymentList = await Payment.find({sid});
+
+  res.status(200).json({
+    success: true,
+   paymentList
+  });
+  })
