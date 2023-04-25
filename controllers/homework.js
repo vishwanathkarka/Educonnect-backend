@@ -7,7 +7,7 @@ const cloudinary = require("cloudinary");
 exports.addHomeworkLecture = BigPromise(async (req, res, next) => {
   console.log(req.body.data)
   const userData = JSON.parse(req.body.data);
-  const { title, submissionDate, description ,department,section } = userData;
+  const { title, submissionDate, description ,department,section, lectureId } = userData;
   let workfile = await cloudinary.v2.uploader.upload(
     req.files.lectureworkFile.tempFilePath,
     {
@@ -18,7 +18,7 @@ exports.addHomeworkLecture = BigPromise(async (req, res, next) => {
   const homework = await Homework.create({
     title,
     submissionDate,
-    // lectureId,
+    lectureId,
     description,
     department,
     section,
@@ -35,17 +35,37 @@ exports.addHomeworkLecture = BigPromise(async (req, res, next) => {
 
 // list the homework based on the section and department
 exports.getHomeWorks = BigPromise(async (req, res, next) => {
-const {section,department} = req.params;
-const Homeworks = await Homework.find({section,department});
+const {section,department}  = req.params;
+const Homeworks = await Homework.find({section,department}).populate("lectureId").exec();
 res.status(200).json({
   status: true,
   Homeworks,
 });
 })
 
+exports.homeworkSubmittedCount = BigPromise(async (req, res, next) => {
+const {id} = req.params
+const count = await Homework.find({userId:id}).count();
+res.status(200).json({
+  success:true,
+  count
+})
+})
+
+exports.homeworkAddedLecturer = BigPromise(async (req, res, next) => {
+  const {id} = req.params
+  const count = await Homework.find({lectureId:id}).count();
+  res.status(200).json({
+    success:true,
+    count
+  })
+  })
+
+
 // adding homework student by lecture id
 exports.addHomeworkstudent = BigPromise(async (req, res, next) => {
-  const { submittedDate, isSubmittedWork } = req.body;
+  const userData = JSON.parse(req.body.data);
+  const { submittedDate, userId, isSubmittedWork } = userData
   let workfile = await cloudinary.v2.uploader.upload(
     req.files.homeworkFile.tempFilePath,
     {
@@ -53,18 +73,22 @@ exports.addHomeworkstudent = BigPromise(async (req, res, next) => {
     }
   );
   const homeworkId = req.params.id;
-  const homeworkcontent = await Homework.find({
+  const homeworkcontent = await Homework.findOne({
     homeworkid: homeworkId,
-    userId: req.user.id,
+     userId: userId,
+    // userId: req.user.id,
   });
-  //   if(homeworkcontent){
-  //    next( new CustomError("homework is already submitted ",400) )
-  //   }
+    // if(homeworkcontent){
+    //  next( new CustomError("homework is already submitted ",400) )
+    // }
+    console.log(homeworkcontent)
   const homework = await Homework.create({
     homeworkid: homeworkId,
-    userId: req.user._id,
+    // userId: req.user._id,
+    userId: userId,
     submittedDate,
-    isSubmittedWork,
+    "isSubmittedWork":true,
+    
     homeworkFile: { id: workfile.public_id, secure_url: workfile.secure_url },
   });
 
@@ -73,3 +97,13 @@ exports.addHomeworkstudent = BigPromise(async (req, res, next) => {
     homework,
   });
 });
+
+
+exports.findHomestudent  = BigPromise(async (req, res, next) => {
+const {userId,homeworkid} = req.params
+const homeworkres = await Homework.findOne({$and: [{"userId":userId},{"homeworkid":homeworkid}]})
+res.status(200).json({
+  success:true,
+homeworkres
+})
+})

@@ -6,5 +6,5 @@ const {isLogined,customRole} = require("../middleware/user")
 
 router.route("/addtimetable").post(isLogined,addTimeTable)
 router.route("/getlecturetable/:id").get(isLogined,getLectureTimeTable)
-router.route("/gettimetable").get(isLogined,getTimeTable)
+router.route("/gettimetable/:department/:section").get(isLogined,getTimeTable)
 module.exports = router;

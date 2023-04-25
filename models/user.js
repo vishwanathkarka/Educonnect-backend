@@ -125,7 +125,7 @@ usermodel.methods.isValidatePassword = async function (pass) {
   return await bcrypt.compare(pass, this.password);
 };
 usermodel.methods.getJwtToken = async function () {
-  return await Jwt.sign({ id: this._id }, process.env.JWT_SCREATE, {
+  return await Jwt.sign({ id: this._id,department:this.departments,role:this.role }, process.env.JWT_SCREATE, {
     expiresIn: process.env.JWT_EXPIRY,
   });
 };

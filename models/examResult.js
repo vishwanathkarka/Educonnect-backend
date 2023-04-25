@@ -15,6 +15,9 @@ const examResult = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "user",
   },
+  percentage:{
+    type:Number
+  }
 });
 
 module.exports = mongoose.model("ExamResult", examResult);

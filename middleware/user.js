@@ -1,26 +1,27 @@
 const BigPromise = require("./Bigpromise")
 const User = require("../models/user")
-const jwt = require("jsonwebtoken")
+const Jwt = require("jsonwebtoken")
 const CustomError = require("../util/customError")
 
-exports.isLogined = async(req,res,next)=>{
-    const token =  req.cookies.token
-    
+exports.isLogined = BigPromise( async(req,res,next)=>{
+    const token =   req.header("Authorization") || req.cookies.token ;
     if(!token){
-        next(new CustomError("Login to access page",400))
+        next(new CustomError("Login is not access",400))
     }
-     const userToken =await jwt.verify(token,process.env.JWT_SCREATE)
+     const userToken = await Jwt.verify(token,process.env.JWT_SCREATE) 
      req.user  = await User.findById(userToken.id);
+     
     
 next()
-}
+})
 
-exports.customRole = (...roles)=>{
+exports.customRole =  (...roles)=>{
     return (req,res,next)=>{
         if(!roles.includes(req.user.role)){
-           return next(CustomError("role is not matching ",403))
+           return next( new CustomError("role is not matching ",403))
         }
         next();
     }
 }
+
 

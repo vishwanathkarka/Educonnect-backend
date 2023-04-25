@@ -17,10 +17,11 @@ exports.addLeave = BigPromise(async (req, res, next) => {
 //get all the user permissions
 exports.viewLeave = BigPromise(async (req, res, next) => {
   // const {pageno} = req.body
+ const {id} = req.params
   const resultPerPage = 4;
   // const skipVal = 7 * (pageno - 1);
 
-  let leaveObj = new WhereClause(Leave.find({ role: "user" }), req.query)
+  let leaveObj = new WhereClause(Leave.find({ userId:id }), req.query)
     .search()
     .filter();
   let leave = await leaveObj.base
@@ -41,9 +42,9 @@ exports.viewLeave = BigPromise(async (req, res, next) => {
 
 // get all the lecture leaves
 exports.viewLeaveLecture = BigPromise(async (req, res, next) => {
-  const permission = await Leave.find({ role: "lecture" })
-    .limit(10)
-    .skip(skipVal)
+  const permission = await Leave.find()
+    // .limit(10)
+    // .skip(skipVal)
     .populate("userId")
     .exec();
   return res.status(200).json({
@@ -74,6 +75,16 @@ exports.updatePermission = BigPromise(async(req,res,next)=>{
   })
 })
 
+exports.updatePermissionuser = BigPromise(async(req,res,next)=>{
+  const id = req.params.id
+  const {subject,fromDate,toDate,description}= req.body;
+  const permission = await Leave.findByIdAndUpdate({"_id":id},{subject,fromDate,toDate,description})
+  return res.status(200).json({
+    status: true,
+    permission,
+  })
+})
+
 //deleting the permission which is in pending state
 exports.deletePermission = BigPromise(async(req,res,next)=>{
   const id = req.params.id
@@ -83,6 +94,17 @@ exports.deletePermission = BigPromise(async(req,res,next)=>{
     status: true,
     permission,
   })
+})
+
+exports.permissionPendingCount = BigPromise(async (req, res, next) => {
+const {id} = req.params
+const permissionCount = await Leave.find({userId:id, isParentApproved:0,isLectureApproved : 0 }  ).count()
+res.status(200).json(
+  {
+    success:true,
+    permissionCount
+  }
+)
 })
 
 // let resultperPage = req.query.result;

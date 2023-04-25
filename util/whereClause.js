@@ -19,14 +19,13 @@ class WhereClause {
             },
           }
         : {};
-  
+       
       this.base = this.base.find({ ...searchword });
       return this;
     }
   
     filter() {
       const copyQ = { ...this.bigQ };
-  
       delete copyQ["search"];
       delete copyQ["limit"];
       delete copyQ["page"];
@@ -35,10 +34,10 @@ class WhereClause {
       let stringOfCopyQ = JSON.stringify(copyQ);
   
       stringOfCopyQ = stringOfCopyQ.replace(
-        /\b(gte|lte|gt|lt)\b/g,
+        /\b(gte|lte|gt|lt|eq)\b/g,
         (m) => `$${m}`
       );
-  
+
       const jsonOfCopyQ = JSON.parse(stringOfCopyQ);
   
       this.base = this.base.find(jsonOfCopyQ);

@@ -10,8 +10,10 @@ exports.addExamMarks = BigPromise(async (req, res) => {
     studentMarks,
     subject,
     userId,
-    lectureId,
-    // lectureId: req.user._id,
+    // lectureId,
+    percentage:((studentMarks/outOfMarks)*100),
+
+    lectureId: req.user.id,
   });
   res.status(200).json({
     success: true,
@@ -31,6 +33,14 @@ exports.getStudentMarks = BigPromise(async (req, res, next) => {
     studetMarks,
   });
 });
+exports.getFailedCount = BigPromise(async(req,res,next)=>{
+  const {id}= req.params;
+  const failedCount = await ExamResult.find({ userId : id, percentage:{$lt:50}  }).count();
+  res.status(200).json({
+    success:true,
+    failedCount
+  })
+})
 
 //updating the marks
 exports.updateMarks = BigPromise(async (req, res, next) => {

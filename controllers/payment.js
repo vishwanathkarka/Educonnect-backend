@@ -43,9 +43,10 @@ exports.checkstatus = BigPromise(async (req, res, next) => {
   const {id} = req.params
   const payment = await Payment.findOne({"sid":id})
   const session = await stripe.checkout.sessions.retrieve(
-    // payment.paymentId
-    "cs_test_a1wA1FCSdDh6vOQ79KO2OpO5UaHqyVlwFCdJdtT0VSFPtMOG0XKOK5FObz"
+  payment.paymentId
+    // "cs_test_a1wA1FCSdDh6vOQ79KO2OpO5UaHqyVlwFCdJdtT0VSFPtMOG0XKOK5FObz"
   );
+
   console.log(session)
 let ispaid = null
   if (session.payment_status === "paid") {
@@ -69,10 +70,10 @@ ispaid = false
 
 
 exports.addNewPayment = BigPromise(async (req, res, next) => {
-const{sid,amount,lastDay,title,description} = req.body;
-// const lid = req.user.id
+const{sid, amount,lastDay,title,description} = req.body;
+const lid = req.user.id
 // const newPayment = await Payment.create({sid,lid,amount,lastDay,description,title});
-const newPayment = await Payment.create({sid,amount,lastDay,description,title});
+const newPayment = await Payment.create({sid,amount,lastDay,description,title,lid });
 
 
 newPayment.save({ validateBeforeSave: false });
@@ -94,3 +95,28 @@ exports.findPaymentList = BigPromise(async (req, res, next) => {
    paymentList
   });
   })
+
+  exports.findPaymentPendingCount = BigPromise(async (req, res, next) => {
+    const{sid} = req.params
+    // const lid = req.user.id
+    // const newPayment = await Payment.create({sid,lid,amount,lastDay,description,title});
+    const paymentPendingCount = await Payment.find({sid,ispaid:false}).count();
+  
+    res.status(200).json({
+      success: true,
+      paymentPendingCount
+    });
+    })
+
+
+    exports.findPaymentPendingCount = BigPromise(async (req, res, next) => {
+      const{sid} = req.params
+      // const lid = req.user.id
+      // const newPayment = await Payment.create({sid,lid,amount,lastDay,description,title});
+      const paymentPendingCount = await Payment.find({sid,ispaid:false}).count();
+    
+      res.status(200).json({
+        success: true,
+        paymentPendingCount
+      });
+      })

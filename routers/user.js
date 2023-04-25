@@ -3,7 +3,7 @@ const router = express.Router()
 const {Signup,findEmail,login,getAdmin,getUser,updateRole,getUserRole,getAllUserRole,getAllUserForAttendance,addDepartmentForUser,addSectionInDepartment,getuserInfoWithId} = require("../controllers/user")
 const {isLogined,customRole} = require("../middleware/user")
 router.route("/signup").post(Signup);
-router.route("/findemail").get(findEmail);
+router.route("/findemail").get(isLogined,findEmail);
 router.route("/login").post(login);
 router.route("/getadmins").get(isLogined,getAdmin);
 router.route("/getusers").get(isLogined,getUser);

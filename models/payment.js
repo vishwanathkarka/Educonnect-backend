@@ -30,9 +30,12 @@ ispaid:{
         type:Date
 
     },
+    paidDate:{
+        type:Date,
+    },
     paymentId:{
         type:String,
-        default:""
+        
     },
     timestamp:{
         type:Date,

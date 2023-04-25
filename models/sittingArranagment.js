@@ -3,32 +3,39 @@ const mongoose = require("mongoose");
 const SittingArrangement = new mongoose.Schema({
   roomno: {
     type: String,
-    required: true,
+    // required: true,
   },
   noOfRow: {
     type: Number,
-    required: true,
+    // required: true,
   },
   noOfCol: {
     type: Number,
-    required: true,
+    // required: true,
   },
   row: {
     type: Number,
-    required: true,
+    // required: true,
   },
   col: {
     type: Number,
-    required: true,
+    // required: true,
+  },
+  examName:{
+    type:String
   },
   userId: {
     type: mongoose.Schema.ObjectId,
     ref: "user",
-    required: true,
+    // required: true,
+  },
+  lecturerId:{
+    type: mongoose.Schema.ObjectId,
+    ref: "user",
   },
   examDate: {
     type: Date,
-    required: true,
+    // required: true,
   },
   timeStamp: {
     type: Date,

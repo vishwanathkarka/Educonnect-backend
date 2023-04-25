@@ -34,6 +34,10 @@ const leave = new mongoose.Schema({
   role: {
     type: String,
   },
+  timeStamp: {
+    type: Date,
+    default: Date.now,
+  }
 });
 const user = mongoose.model("user", userSchema);
 module.exports = mongoose.model("leave", leave);

@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 
 const timetable = mongoose.Schema({
   section: {
-    type: String,
-    require: true,
+    type: mongoose.Schema.ObjectId,
+    ref: "section",
   },
   department: {
-    type: String,
-    require: true,
+    type: mongoose.Schema.ObjectId,
+    ref: "department",
   },
   lectureId: {
     type: mongoose.Schema.ObjectId,
