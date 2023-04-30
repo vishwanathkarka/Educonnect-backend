@@ -29,27 +29,48 @@ exports.viewLeave = BigPromise(async (req, res, next) => {
     .exec();
   const filteredLeaveCount = leave.length;
   leaveObj.pager(resultPerPage);
-  leaves = await leaveObj.base.clone();
+  permission = await leaveObj.base.clone();
 
   // const permission =  await Leave.find({"role":"user"}).limit(10).skip(skipVal).populate("userId").exec();
 
   return res.status(200).json({
     status: true,
-    leaves,
+    permission,
     filteredLeaveCount,
   });
 });
 
+
+
 // get all the lecture leaves
 exports.viewLeaveLecture = BigPromise(async (req, res, next) => {
-  const permission = await Leave.find()
-    // .limit(10)
-    // .skip(skipVal)
+  // const permission = await Leave.find()
+  //   // .limit(10)
+  //   // .skip(skipVal)
+  //   .populate("userId")
+  //   .exec();
+  // return res.status(200).json({
+  //   status: true,
+  //   permission,
+  // });
+  const {id} = req.params
+  const resultPerPage = 4;
+  // const skipVal = 7 * (pageno - 1);
+
+  let leaveObj = new WhereClause(Leave.find(), req.query)
+    .search()
+    .filter();
+  let leave = await leaveObj.base
     .populate("userId")
     .exec();
+  const filteredLeaveCount = leave.length;
+  leaveObj.pager(resultPerPage);
+  permission = await leaveObj.base.clone();
+
   return res.status(200).json({
     status: true,
     permission,
+    filteredLeaveCount,
   });
 });
 
@@ -68,12 +89,24 @@ exports.viewStudent = BigPromise(async (req, res, next) => {
 exports.updatePermission = BigPromise(async(req,res,next)=>{
   const id = req.params.id
   const {isParentApproved,isLectureApproved}= req.body;
-  const permission = await Leave.findByIdAndUpdate({"_id":id},{isParentApproved,isLectureApproved})
+  const permission = await Leave.findOneAndUpdate({"_id":id},{isLectureApproved,isParentApproved})
   return res.status(200).json({
     status: true,
     permission,
   })
 })
+
+// update the permission
+exports.updatePermissionParent = BigPromise(async(req,res,next)=>{
+  const id = req.params.id
+  const {isParentApproved}= req.body;
+  const permission = await Leave.findOneAndUpdate({"_id":id},{"isParentApproved":isParentApproved})
+  return res.status(200).json({
+    status: true,
+    permission,
+  })
+})
+
 
 exports.updatePermissionuser = BigPromise(async(req,res,next)=>{
   const id = req.params.id

@@ -24,7 +24,8 @@ exports.addExamMarks = BigPromise(async (req, res) => {
 
 //getting exam marks of the specific student
 exports.getStudentMarks = BigPromise(async (req, res, next) => {
-  const studetMarks = await ExamResult.find({ userId: req.user._id });
+  const {id} = req.params;
+  const studetMarks = await ExamResult.find({ userId: id });
   if (!studetMarks) {
     next(new CustomError("Marks is not uploaded", 400));
   }

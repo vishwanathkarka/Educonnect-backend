@@ -17,7 +17,7 @@ res.status(200).json({
 
 // get lecture timetable
 exports.getLectureTimeTable = BigPromise(async(req,res,next)=>{
-    const lectureTimeTable = await Timetable.find({"lectureId":req.params.id})
+    const lectureTimeTable = await Timetable.find({"lectureId":req.user.id})
     if(!lectureTimeTable){
         next(new CustomError("No TimeTable in DB",400));
     }

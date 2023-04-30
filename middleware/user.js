@@ -6,7 +6,7 @@ const CustomError = require("../util/customError")
 exports.isLogined = BigPromise( async(req,res,next)=>{
     const token =   req.header("Authorization") || req.cookies.token ;
     if(!token){
-        next(new CustomError("Login is not access",400))
+        next(new CustomError("Login is mandatory",400))
     }
      const userToken = await Jwt.verify(token,process.env.JWT_SCREATE) 
      req.user  = await User.findById(userToken.id);
