@@ -241,6 +241,16 @@ exports.updateRole = BigPromise(async (req, res, next) => {
   });
 });
 
+exports.updateUserData = BigPromise(async(req,res,next)=>{
+  const {id} = req.params;
+const updateUser = await User.updateOne({"_id":id},req.body)
+res.status(200).json({
+  success: true,
+  updateUser,
+  id
+});
+})
+
 // get all the user
 exports.getAllUserRole = BigPromise(async (req, res, next) => {
   const { role } = req.body;
@@ -308,4 +318,12 @@ break;
         user
     })
 
+  })
+  exports.getusersforAdmin = BigPromise(async(req,res,next)=>{
+    const {department,role,section} = req.params;
+    const user = await User.find({"departments":{$elemMatch:{"department":department,"section":section}},"role":role}).populate('departments.department').populate('departments.section').populate("student_id").exec();;
+    res.status(200).json({
+      success:true,
+      user
+    }) 
   })
