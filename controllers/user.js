@@ -105,11 +105,12 @@ exports.Signup = BigPromise(async (req, res, next) => {
   } else if(role == "parent") {
     const user = await User.findOne({"studentEmail":studentEmail})
     if(user){
-      return next(new CustomError("Already this email is already used", 400));
+      
+      throw new CustomError("Already this email is already used", 400);
     }
     const userinfo = await User.findOne({"email":studentEmail})
     if(!userinfo){
-      return next(new CustomError("Check the Student email", 400));
+     throw CustomError("Check the Student email", 400);
     }
     userCreated = await User.create({
       firstName,
@@ -146,13 +147,12 @@ module.exports.login = BigPromise(async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email }).select("+password").populate('departments.department').populate('departments.section').populate("student_id").exec();;
   console.log("*****)(()" + email);
-  // if(!user && !password){
-  //     return next(new CustomError(" email and password are required", 400));
-  // }
-
+  if(!user && !password){
+    throw new CustomError('Email & password needed', 400);
+  }
   let validatePassword = await user.isValidatePassword(password);
   if (!validatePassword) {
-    return next(new CustomError("Wrong password Entered", 400));
+    throw new CustomError('wrong email or password entered', 400);
   }
   if(user.student_id){
 
