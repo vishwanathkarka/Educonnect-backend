@@ -12,6 +12,7 @@ exports.addattendance = BigPromise(async(req,res,next)=>{
     })
 })
 
+
 // get attendance
 exports.getAttendance = BigPromise(async(req,res,next)=>{
     const attendanceList =  new WhereClause(Attendance.find(req.body),req.query).pager(2) 
@@ -21,6 +22,7 @@ success:true,
 att
     })
 })
+
 
 // getting Individual Attendance
 exports.getIndividualAttendance = BigPromise(async(req,res,next)=>{
