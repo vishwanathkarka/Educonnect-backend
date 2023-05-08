@@ -6,7 +6,7 @@ const CustomError = require("../util/customError")
   //add the time table
 exports.addTimeTable = BigPromise(async(req,res,next)=>{
 const {section,department,monday,tuesday,wednesday,thursday,friday,saturday,period,subjectName} = req.body;
-const timeTable = await Timetable.create({section,department,monday,tuesday,wednesday,thursday,friday,saturday,period,
+const timeTable = await Timetable.create({section,department,monday,tuesday,wednesday,thursday,friday,saturday,period, subjectName,
     lectureId:req.user.id
 })
 
