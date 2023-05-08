@@ -25,8 +25,8 @@ exports.paymentcollegefree = BigPromise(async (req, res, next) => {
       },
     ],
     mode: "payment",
-    success_url: `http://localhost:3000/payment/pay/${id}/success`,
-    cancel_url: `http://localhost:3000/payment/pay/${id}/cancel`,
+    success_url: `https://school-management-system-frontend-rosy.vercel.app/payment/pay/${id}/success`,
+    cancel_url: `https://school-management-system-frontend-rosy.vercel.app/pay/${id}/cancel`,
   });
   const addingID = await Payment.findByIdAndUpdate({"_id":id},{"paymentId":session.id})
   res.status(200).json({
@@ -41,14 +41,14 @@ exports.paymentcollegefree = BigPromise(async (req, res, next) => {
 
 exports.checkstatus = BigPromise(async (req, res, next) => {
   const {id} = req.params
-  
+
   const payment = await Payment.findOne({"sid":id})
   const session = await stripe.checkout.sessions.retrieve(
   payment.paymentId
     // "cs_test_a1wA1FCSdDh6vOQ79KO2OpO5UaHqyVlwFCdJdtT0VSFPtMOG0XKOK5FObz"
   );
 
-  console.log(session)
+ 
 let ispaid = null
   if (session.payment_status === "paid") {
   ispaid = true
@@ -58,7 +58,7 @@ let ispaid = null
 ispaid = false
  
   }
-  const pay =  await Payment.findOneAndUpdate({"sid":id},{"ispaid":ispaid})
+  const pay =  await Payment.findOneAndUpdate({"_id":id},{"ispaid":ispaid})
   console.log(pay)
   res.status(200).json({
     success: true,
