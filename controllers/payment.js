@@ -41,14 +41,12 @@ exports.paymentcollegefree = BigPromise(async (req, res, next) => {
 
 exports.checkstatus = BigPromise(async (req, res, next) => {
   const {id} = req.params
-
-  const payment = await Payment.findOne({"sid":id})
+  const payment = await Payment.findOne({"_id":id})
   const session = await stripe.checkout.sessions.retrieve(
   payment.paymentId
     // "cs_test_a1wA1FCSdDh6vOQ79KO2OpO5UaHqyVlwFCdJdtT0VSFPtMOG0XKOK5FObz"
   );
 
- 
 let ispaid = null
   if (session.payment_status === "paid") {
   ispaid = true
