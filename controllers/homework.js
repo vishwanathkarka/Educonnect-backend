@@ -74,8 +74,7 @@ exports.addHomeworkstudent = BigPromise(async (req, res, next) => {
   );
   const homeworkId = req.params.id;
   const homeworkcontent = await Homework.findOne({
-    homeworkid: homeworkId,
-     userId: userId,
+    _id: homeworkId,
     userId: req.user.id,
   });
     if(homeworkcontent){
@@ -85,10 +84,8 @@ exports.addHomeworkstudent = BigPromise(async (req, res, next) => {
   const homework = await Homework.create({
     homeworkid: homeworkId,
     userId: req.user._id,
-    userId: userId,
     submittedDate,
-    "isSubmittedWork":true,
-    
+    "isSubmittedWork":true, 
     homeworkFile: { id: workfile.public_id, secure_url: workfile.secure_url },
   });
 
