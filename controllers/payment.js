@@ -58,7 +58,7 @@ let ispaid = null
 ispaid = false
  
   }
-  const pay =  await Payment.findOneAndUpdate({"_id":id},{"ispaid":ispaid})
+  const pay =  await Payment.updateOne({"_id":id},{"ispaid":ispaid})
   console.log(pay)
   res.status(200).json({
     success: true,
