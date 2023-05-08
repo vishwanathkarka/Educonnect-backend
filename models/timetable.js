@@ -40,6 +40,9 @@ const timetable = mongoose.Schema({
   period: {
     type: Number,
   },
+  subjectName:{
+    type:String
+  },
   timeStamp: {
     type: Date,
     default: Date.now,
