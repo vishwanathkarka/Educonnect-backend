@@ -27,7 +27,7 @@ exports.getStudentMarks = BigPromise(async (req, res, next) => {
   const {id} = req.params;
   const studetMarks = await ExamResult.find({ userId: id });
   if (!studetMarks) {
-    next(new CustomError("Marks is not uploaded", 400));
+    throw new CustomError("Marks Not Uploaded", 400);
   }
   res.status(200).json({
     success: true,

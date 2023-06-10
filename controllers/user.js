@@ -232,7 +232,7 @@ exports.updateRole = BigPromise(async (req, res, next) => {
   const { role, email } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    next(new CustomError("Enter Valid email", 400));
+    throw new CustomError("Enter valid Email", 400);
   }
   const updatedRole = await User.updateOne({ _id: user._id }, { role: role });
   res.status(200).json({
