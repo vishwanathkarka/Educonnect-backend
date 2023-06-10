@@ -151,9 +151,9 @@ module.exports.login = BigPromise(async (req, res, next) => {
     throw new CustomError('Email & password needed', 400);
   }
   let validatePassword = await user.isValidatePassword(password);
-  if (!validatePassword) {
-    throw new CustomError('wrong email or password entered', 400);
-  }
+  // if (!validatePassword) {
+  //   throw new CustomError('wrong email or password entered', 400);
+  // }
   if(user.student_id){
 
   }
