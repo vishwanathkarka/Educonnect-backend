@@ -13,43 +13,40 @@ tracking, Payment management, Permission handling, Timetable, Exam arrangements,
 | Fronted Github Link | [GitHub](https://github.com/vishwanathkarka/Educonnect-frontend) |
 
 
-## API Reference - base link
-
+# API Reference - base link
+## User Routes
 #### Login to route
 
-```http
+```https
   POST /api/login
 ```
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `api_key` | `string` | **Required**. Your API key |
 
-#### Get item
+### Get item
 
-```http
-  GET /api/items/${id}
+```https
+  GET /api/items/:id
 ```
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `string` | **Required**. Id of item to fetch |
 
-#### add(num1, num2)
 
 Takes two numbers and returns the sum.
 
 
-## API Reference - base link
+### Login to route
 
-#### Login to route
-
-```http
+```https
   POST /api/v1/login
 ```
 
-#### Signup
+### Signup
 
-```http
+```https
   GET /api/v1/signup
 ```
 | Parameter | Type     | Description                       |
@@ -68,52 +65,181 @@ Takes two numbers and returns the sum.
 
 
 
+### Logout
 
-
-
-
-#### Logout
-
-```http
+```https
   GET /api/v1/Logout
 ```
 
 
-#### Get Admin
+### Get Admin
 
-```http
+```https
   GET /api/v1/getadmins
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `isLogined`      | `Boolean` | **Required**. To valiate the user login with JSON WEBTOKEN |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEBTOKEN |
 
 To Get all the Admin List
 
-#### Get Users
+### Get Users
 
-```http
+```https
   GET /api/v1/getadmins
 ```
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `isLogined`      | `Boolean` | **Required**. To valiate the user login with JSON WEBTOKEN |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEBTOKEN |
 
 To Get all the User List
 
-#### Update Role By Admin
+### View Role users By Admin
 
-```http
-  PUT /api/v1/updaterole
+```https
+  POST /api/v1/updaterole
 ```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `isAdmin`      | `Validation` | **Required**. To validate is Admin or Not |
+| `Role`      | `String` | **Required**. To get all the User with the role |
+
+Used to get specific role users
+
+### View All Role User By Admin
+
+```https
+  POST /api/v1/getallroles
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `isAdmin`      | `Validation` | **Required**. To validate is Admin or Not |
+
+Used to all the user 
+
+### Adding the department to the lecturer role by Admin
+
+```https
+  PUT /api/v1/adddepartmentforuser/:id
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `isAdmin`      | `Validation` | **Required**. To validate is Admin or Not |
+| `Department`      | `Array` | **Required**.  |
+| `Section`      | `Array` | **Required**.  |
+
+
+### Get Users for Attendance by lecturer
+
+```https
+  POST /api/v1/getalluserforattendance
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `isAdmin`      | `Validation` | **Required**. To validate is Admin or Not |
+| `Department`      | `String` | **Required**.  |
+| `Section`      | `String` | **Required**.  |
+
+
+
+### Add the section for the Lecturer by Admin
+
+```https
+  PUT /api/v1/addsectionindepartment/:id/:department
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `validation` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `isAdmin`      | `validation` | **Required**. To validate is Admin or Not |
+| `id`      | `String` | **Required**. To Find the User|
+| `department`      | `String` | **Required**.  to find the Department to add the section in the Department Array |
+
+
+### Get User By ID
+
+```https
+  GET /api/v1/getuserinfowithid/:id
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Boolean` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `id`      | `ID` | **Required**. To Find the User|
+
+### Get The Users Based On The Department , Section , Role
+
+```https
+  GET /api/v1/getusersforadmin/:department/:section/:role
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `validation` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `isAdmin`      | `Validation` | **Required**. To validate is Admin or Not |
+| `department`      | `ID` | **Required**.  to find the Department |
+| `section`      | `ID` | **Required**.  to find the Section users  |
+| `role`      | `ID` | **Required**.  to find the role users  |
+
+
+### Update The User By Admin
+
+```https
+  GET /api/v1/updateuserdata/:id
+```
+
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `isLogined`      | `Boolean` | **Required**. To validate the user login with JSON WEBTOKEN |
 | `isAdmin`      | `Boolean` | **Required**. To validate is Admin or Not |
-| `Email`      | `Email` | **Required**. Email id to identeify the user |
-| `Role`      | `String` | **Required**. To update to specific role |
+| `id`      | `ID` | **Required**. To Find the User|
+| `Body Data`      | `String` | **Required**. Data to update user Information|
+
+## TimeTable Routes
+
+### Get Time Table 
+
+```https
+  GET /api/v1/gettimetable/:department/:section
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `department`      | `ID` | **Required**. To Get the Department Timetable |
+| `section`      | `ID` | **Required**. To Get Section Timetable |
+
+### Add Time Table 
+
+```https
+  GET /api/v1/addtimetable
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Lecturer Id `      | `ID` | **Required**. To add the Lecturer ID|
+| `isLecturer`      | `Validation` | **Required**. To validate is Admin or Not |
+| `department`      | `ID` | **Required**.  |
+| `section`      | `ID` | **Required**. |
+| `Monday`      | `Boolean` | **Required**. |
+| `Tursday`      | `Boolean` | **Required**. |
+| `friday`      | `Boolean` | **Required**. |
+| `Saturday`      | `Boolean` | **Required**. |
+| `Subject Name`      | `String` | **Required**. |
+| `Period`      | `Number` | **Required**. |
 
 
+### Get Lecturer TimeTable
 
-
+```https
+  GET /api/v1/getlecturetable
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Lecturer Id `      | `ID` | **Required**. To add the Lecturer ID|
+| `isLecturer`      | `Validation` | **Required**. To validate is a Lecturer or Not |
 
