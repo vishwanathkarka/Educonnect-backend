@@ -243,3 +243,69 @@ Used to all the user
 | `Lecturer Id `      | `ID` | **Required**. To add the Lecturer ID|
 | `isLecturer`      | `Validation` | **Required**. To validate is a Lecturer or Not |
 
+
+## Sitting Arrangement Route
+
+### Add Sitting Arrangement
+
+```https
+  POST /api/v1/addSittingArrangement
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `Lecturer Id`      | `ID` | **Required**. To add in the sitting arrangement request |
+| `User Id`      | `ID` | **Required**. Adding Sitting arrangement for the user  |
+| `Room No`      | `Number` | **Required**.  |
+| `Row No`      | `Number` | **Required**.  |
+| `Col No`      | `Number` | **Required**.  |
+| `NoOfRow`      | `Number` | **Required**.  |
+| `NoOfCol`      | `Number` | **Required**.  |
+| `Exam Date`      | `Date` | **Required**.  |
+| `Exam Name`      | `String` | **Required**.  |
+
+
+### Find a Sitting Arrangement
+```https
+  POST /api/v1/findsittingarragement/:id
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `Lecturer Id`      | `ID` | **Required**. To add in the sitting arrangement request |
+| ` UserID`      | `ID` | **Required**. To Find the User Sitting plain |
+
+### View Sitting arrangement Added by Lecturer
+
+```https
+  GET /api/v1/findsittingarragement/:id
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `Lecturer Id`      | `ID` | **Required**. To add in the sitting arrangement request |
+
+
+
+## Section Route
+
+### Add Section
+
+```https
+  POST /api/v1/addsection
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Section`      | `String` | **Required**.  |
+
+
+## Get Sections
+
+```https
+  GET /api/v1/listsection
+```
+
+
