@@ -1,8 +1,16 @@
 
-# School managment project - A fullstack project 
+# Educonnect - A fullstack project [Live Link](https://educonnect.vishwanathkarka.com) 
 
-Designed & developed a fullstack javascript web application that streamlines administrative tasks, facilitates communication, and provides real-time insights for students, parents, lecturers, and administrators in educational institutions. . Technologies/Tools (Javascript,NextJS,NodeJs, Mongodb )
+Frontend [Link](https://github.com/vishwanathkarka/Educonnect-backend) : Developed a comprehensive educational platform using Next.js. & Backend [Link](https://github.com/vishwanathkarka/Educonnect-frontend) : Utilized Node.js for the backend and
+MongoDB for the database, Integrated Stripe payment Gateway API for payment processing.
+Implemented role-based access control for students, parents, lecturers, and admins, Provided features such as Login, Signup, Attendance
+tracking, Payment management, Permission handling, Timetable, Exam arrangements, Homework, and Exam results.
 
+| TYPE | LIVE LINK    |
+| :-------- | :------- |
+| LIVE LINK | [LINK](https://educonnect.vishwanathkarka.com) |
+| Backend Github Link | [GitHub](https://github.com/vishwanathkarka/Educonnect-backend) |
+| Fronted Github Link | [GitHub](https://github.com/vishwanathkarka/Educonnect-frontend) |
 
 
 ## API Reference - base link
@@ -71,7 +79,41 @@ Takes two numbers and returns the sum.
 ```
 
 
-#### add(num1, num2)
+#### Get Admin
 
-Takes two numbers and returns the sum.
+```http
+  GET /api/v1/getadmins
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Boolean` | **Required**. To valiate the user login with JSON WEBTOKEN |
+
+To Get all the Admin List
+
+#### Get Users
+
+```http
+  GET /api/v1/getadmins
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Boolean` | **Required**. To valiate the user login with JSON WEBTOKEN |
+
+To Get all the User List
+
+#### Update Role By Admin
+
+```http
+  PUT /api/v1/updaterole
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Boolean` | **Required**. To validate the user login with JSON WEBTOKEN |
+| `isAdmin`      | `Boolean` | **Required**. To validate is Admin or Not |
+| `Email`      | `Email` | **Required**. Email id to identeify the user |
+| `Role`      | `String` | **Required**. To update to specific role |
+
+
+
+
 
