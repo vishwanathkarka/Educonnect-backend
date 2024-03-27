@@ -302,10 +302,111 @@ Used to all the user
 | `Section`      | `String` | **Required**.  |
 
 
-## Get Sections
+
+### Get Sections
 
 ```https
   GET /api/v1/listsection
 ```
+
+
+## Department Routes
+
+### Add Department
+
+```https
+  POST /api/v1/adddepartment
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Department`      | `String` | **Required**.  |
+
+### List Department
+```https
+  GET /api/v1/listdepartment
+```
+
+### List Department Specific
+
+```https
+  POST /api/v1/listdepartmentspecific
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Department`      | `String` | **Required**.  |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+
+## Payment Routes
+
+###Payment with Stripe
+
+```https
+  GET /api/v1/payment/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Id`      | `String` | **Required**.  Payment Id |
+
+###Payment with Stripe
+
+```https
+  GET /api/v1/payment/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Id`      | `String` | **Required**.  Payment Id |
+
+### Add Payment Request
+```https
+  POST /api/v1/addpayment
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `Sid`      | `String` | **Required**.   |
+| `Amount`      | `Number` | **Required** |
+| `LastDay`      | `Date` | **Required** |
+| `Title`      | `String` | **Required**.   |
+| `Description`      | `String` | **Required** |
+
+### Get Payment with Sid
+```https
+  GET /api/v1/getpaymentlist/:sid
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `sid`      | `String` | **Required** |
+
+### Get Pending payment Count
+```https
+  GET /api/v1/findpaymentpendingcount/:sid
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `sid`      | `String` | **Required** |
+
+### Get Payment Added By Lecturer
+```https
+  GET /api/v1/findpaymentpendingcount/:sid
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `sid`      | `String` | **Required** |
+
+### Check Payment Status
+```https
+  GET /api/v1/checkstatus/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `id`      | `String` | **Required** |
+
+
+## Permission Routes
 
 
