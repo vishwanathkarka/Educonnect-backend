@@ -409,4 +409,104 @@ Used to all the user
 
 ## Permission Routes
 
+### Add Permission
+```https
+  GET /api/v1/addleave
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `subject`      | `String` | **Required** |
+| `description `      | `String` | **Required** |
+| `fromDate`      | `Date` |  |
+ | `toDate`      | `Date` | |
+  | `Duration`      | `Number` | |
 
+### View Users Permissions
+
+```https
+  GET /api/v1/viewleaveuser/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `ID`      | `String` | **Required** |
+
+
+### Counting the Permissions
+
+```https
+  GET /api/v1/permissionpendingcount/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `ID`      | `String` | **Required** |
+
+### View Permissions by Lecturer
+
+```https
+  GET /api/v1/viewleavelecture
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `isLecturer`      | `Validation` | **Required**. To validate is a Lecturer or Not |
+
+### View Permissions by Student
+
+```https
+  GET /api/v1/viewleavestudent
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+
+### Update Permissions
+
+```https
+  PUT /api/v1/updateleave/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `ID`      | `String` | **Required** |
+
+### Approve or Reject Request by Parent
+
+```https
+  PUT /api/v1/updatepermissionparent/:id
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `ID`      | `String` | **Required** |
+
+### Approve or Reject Request by Student
+
+```https
+  PUT /api/v1/updateleavestudent/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `ID`      | `String` | **Required** |
+
+
+### Delete Persission 
+```https
+  PUT /api/v1/deleteleave/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `isLogined`      | `Validation` | **Required**. To validate the user login with JSON WEB TOKEN |
+| `ID`      | `String` | **Required** |
+
+## HomeWork Route
+
+### Add HomeWork By Lecture 
+```https
+  POST /api/v1/addhomeworklecture
+```
+ 
