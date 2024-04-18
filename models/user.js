@@ -122,7 +122,11 @@ usermodel.pre("save", async function (next) {
 });
 
 usermodel.methods.isValidatePassword = async function (pass) {
-  return await bcrypt.compare(pass, this.password);
+  return await bcrypt.compare(pass, this.password, function(err, result) {
+  console.log(err)
+    return result
+   
+});
 };
 usermodel.methods.getJwtToken = async function () {
   return await Jwt.sign({ id: this._id,department:this.departments,role:this.role }, process.env.JWT_SCREATE, {

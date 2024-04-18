@@ -3,7 +3,7 @@ const Payment = require("../models/payment")
 const express = require("express");
 const app = express();
 const stripe = require("stripe")(
-  "sk_test_51MbnZVSJHHXXNgLXlV6jBeCNuwzdZ3SsPrsTAKnndxcYHbkQT4vTtkXp6Ax5Nq4muNvrMhPAQvgjNTDKsuXONSdB00Baei0TdI"
+  process.env.STRIPT_ID
 );
 
 exports.paymentcollegefree = BigPromise(async (req, res, next) => {
@@ -34,9 +34,9 @@ exports.paymentcollegefree = BigPromise(async (req, res, next) => {
     session,
   });
   }
-
-  return next(new CustomError("fake id entered", 400));
- 
+  throw new CustomError("Fake id Entered", 400);
+  // return next(new CustomError("fake id entered", 400));
+  
 });
 
 exports.checkstatus = BigPromise(async (req, res, next) => {

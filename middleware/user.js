@@ -18,7 +18,7 @@ next()
 exports.customRole =  (...roles)=>{
     return (req,res,next)=>{
         if(!roles.includes(req.user.role)){
-           return next( new CustomError("role is not matching ",403))
+           throw new CustomError("role is not matching", 400);
         }
         next();
     }

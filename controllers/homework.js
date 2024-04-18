@@ -80,11 +80,11 @@ exports.addHomeworkstudent = BigPromise(async (req, res, next) => {
   //   if(homeworkcontent){
   //     throw new CustomError("homework is already submitted ",400) 
   //   }
-    console.log(homeworkcontent)
+  
   const homework = await Homework.create({
     homeworkid: homeworkId,
     userId: req.user.id,
-    submittedDate,
+    submittedDate:Date.now(),
     "isSubmittedWork":true, 
     homeworkFile: { id: workfile.public_id, secure_url: workfile.secure_url },
   });

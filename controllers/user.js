@@ -4,6 +4,7 @@ const cloudinary = require("cloudinary");
 const BigPromise = require("../middleware/Bigpromise");
 const CustomError = require("../util/customError");
 const cookieToken = require("../util/cookieToken");
+const bcrypt = require("bcryptjs")
 
 //signup
 exports.findEmail = BigPromise(async (req, res, next) => {
@@ -40,24 +41,14 @@ exports.Signup = BigPromise(async (req, res, next) => {
     htno,
     gender,
   } = userData;
-  //checking the email in DB
-  //  let eee = JSON.parse(req.body.data[0])
-  //  console.log(eee.email)
-  //  let jj = JSON.stringify(req.body.data)
-  //  console.log(jj.email)
-  //    const user = await User.findOne({email});
-  //    if exists
-
-  // if(user){
-  //   return next(new CustomError("Email already exited ",400))
-
-  // }
 
   if (!(firstName || lastName || email || password || role || departments)) {
-    return next(new CustomError("Name email and password is mandatory", 400));
+    throw new CustomError("Name email and password is mandatory", 400);
+   
   }
   if (!req.files.photo) {
-    return next(new CustomError("photo is mandatory", 400));
+    throw new CustomError("photo is mandatory", 400);
+   
   }
 
   // uploading photo
@@ -110,7 +101,8 @@ exports.Signup = BigPromise(async (req, res, next) => {
     }
     const userinfo = await User.findOne({"email":studentEmail})
     if(!userinfo){
-     throw CustomError("Check the Student email", 400);
+      
+     throw new CustomError("Check the Student email", 400);
     }
     userCreated = await User.create({
       firstName,
@@ -150,10 +142,14 @@ module.exports.login = BigPromise(async (req, res, next) => {
   if(!user && !password){
     throw new CustomError('Email & password needed', 400);
   }
-  let validatePassword = await user.isValidatePassword(password);
-  // if (!validatePassword) {
-  //   throw new CustomError('wrong email or password entered', 400);
-  // }
+  console.log(password)
+  console.log(user.password)
+  let validatePassword = await bcrypt.compare(password,user.password)
+  console.log(validatePassword)
+  console.log(`userrrr ${user}`)
+  if (validatePassword == false || email != user.email) {
+    throw new CustomError('wrong email or password entered', 400);
+  }
   if(user.student_id){
 
   }
@@ -219,7 +215,8 @@ exports.getUserRole = BigPromise(async (req, res, next) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    return next(new CustomError("Enter Valid email", 400));
+    throw new CustomError("Enter valid Email", 400);
+   
   }
   res.status(200).json({
     success: true,
@@ -232,6 +229,7 @@ exports.updateRole = BigPromise(async (req, res, next) => {
   const { role, email } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
+    
     throw new CustomError("Enter valid Email", 400);
   }
   const updatedRole = await User.updateOne({ _id: user._id }, { role: role });

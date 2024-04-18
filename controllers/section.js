@@ -8,6 +8,7 @@ exports.SectionItem = BigPromise(async (req, res, next) => {
   const alreadyExistSec = await Section.findOne({ section });
 
   if (alreadyExistSec) {
+    
     throw new CustomError("Already department existed", 400);
   }
   const Sec = await Section.create({ section });

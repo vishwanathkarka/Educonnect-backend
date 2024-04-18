@@ -8,7 +8,6 @@ router.route("/addpayment").post(isLogined, addNewPayment);
 router.route("/getpaymentlist/:sid").get(isLogined, findPaymentList);
 router.route("/findpaymentpendingcount/:sid").get(isLogined,findPaymentPendingCount);
 router.route("/findpaymentadded/lecturer/:sid").get(isLogined,findPaymentPendingCount);
-
 router.route("/checkstatus/:id").get(isLogined ,checkstatus);
 
 module.exports = router;

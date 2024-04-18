@@ -37,11 +37,13 @@ const homework = mongoose.Schema({
   homeworkFile: {
     id: {
       type: String,
+      
     },
     secure_url: {
       type: String,
     },
   },
+  
   department:{
     type: mongoose.Schema.ObjectId,
     ref:"department"
