@@ -20,10 +20,19 @@ exports.viewLeave = BigPromise(async (req, res, next) => {
  const {id} = req.params
   const resultPerPage = 4;
   // const skipVal = 7 * (pageno - 1);
+  const {isLectureApproved,isParentApproved} = req.query
+  let leaveObj
+  if(isLectureApproved == 0 || isParentApproved ==0){
 
-  let leaveObj = new WhereClause(Leave.find({ userId:id }), req.query)
+     leaveObj = new WhereClause(Leave.find({ userId:id , $or:[{isLectureApproved:isLectureApproved},{isParentApproved:isParentApproved}]}), req.query.page)
     .search()
     .filter();
+  }
+  else{
+   leaveObj = new WhereClause(Leave.find({ userId:id }), req.query)
+    .search()
+    .filter();
+  }
   let leave = await leaveObj.base
     .populate({ path: "userId", populate: { path: "departments.department" } })
     .exec();

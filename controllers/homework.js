@@ -61,7 +61,6 @@ exports.homeworkAddedLecturer = BigPromise(async (req, res, next) => {
   })
   })
 
-
 // adding homework student by lecture id
 exports.addHomeworkstudent = BigPromise(async (req, res, next) => {
   const userData = JSON.parse(req.body.data);
@@ -80,14 +79,19 @@ exports.addHomeworkstudent = BigPromise(async (req, res, next) => {
   //   if(homeworkcontent){
   //     throw new CustomError("homework is already submitted ",400) 
   //   }
-  
-  const homework = await Homework.create({
-    homeworkid: homeworkId,
-    userId: req.user.id,
-    submittedDate:Date.now(),
-    "isSubmittedWork":true, 
-    homeworkFile: { id: workfile.public_id, secure_url: workfile.secure_url },
-  });
+  const homework = await Homework.findOne({_id:req.params.id})
+  console.log(homework)
+  homework.submittedDate=Date.now()
+  homework.isSubmittedWork = true
+  homework.homeworkFile = { id: workfile.public_id, secure_url: workfile.secure_url }
+  homework.save()
+  // const homework = await Homework.create({
+  //   homeworkid: homeworkId,
+  //   userId: req.user.id,
+  //   submittedDate:Date.now(),
+  //   "isSubmittedWork":true, 
+  //   homeworkFile: { id: workfile.public_id, secure_url: workfile.secure_url },
+  // });
 
   res.status(200).json({
     success: true,
@@ -103,4 +107,13 @@ res.status(200).json({
   success:true,
 homeworkres
 })
+})
+
+exports.getLecturerAddedHomeWork = BigPromise(async(req,res,next)=>{
+  const id = req.user._id
+  const homeWork = await Homework.find({lectureId:id})
+  res.status(200).json({
+    success:true,
+    homeWork
+  })
 })

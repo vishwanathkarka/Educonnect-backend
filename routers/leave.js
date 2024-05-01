@@ -14,4 +14,4 @@ router.route("/updateleavestudent/:id").put(isLogined,updatePermissionuser);
 router.route("/deleteleave/:id").delete(isLogined,deletePermission);
 
 // customRole
-module.exports = router;
+module.exports = router

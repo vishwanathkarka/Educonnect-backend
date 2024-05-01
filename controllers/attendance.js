@@ -52,4 +52,22 @@ exports.BulkAttendanceAdd = BigPromise(async(req,res,next)=>{
     })
 })
 
-
+// view lecturer added attendance
+exports.getLecturerAddedAtt = BigPromise(async(req,res,next)=>{
+    const {id} = req.params;
+    let date = req.query.date;
+    if (date == undefined || date==null){
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        
+        date =  yyyy +'-'+ mm +'-'+ dd ;
+    }
+    console.log({lectureId:id })
+const att = await Attendance.find({$and:[{lectureId:id },{AttendanceDate:{ $gte: new Date(`${date}T00:00:00.000Z`), $lt: new Date(new Date(`${date}`).getTime()+(1000*60*60*24))}}]}).populate('userId')
+res.status(200).json({
+    success:true,
+    att
+})
+})

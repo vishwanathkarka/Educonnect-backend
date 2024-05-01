@@ -18,6 +18,7 @@ const homework = mongoose.Schema({
   },
   submittedDate: {
     type: Date,
+    default:null
   },
   lectureworkFile: {
     id: {
@@ -37,7 +38,6 @@ const homework = mongoose.Schema({
   homeworkFile: {
     id: {
       type: String,
-      
     },
     secure_url: {
       type: String,

@@ -82,7 +82,6 @@ exports.Signup = BigPromise(async (req, res, next) => {
         secure_url: result.secure_url,
       },
     });
-    console.log("&&&&&&&^^^^&&&" + userCreated);
     // if(!parentEmail){
     //     return  next(new CustomError("Parent_email"))
     // }
@@ -150,9 +149,7 @@ module.exports.login = BigPromise(async (req, res, next) => {
   if (validatePassword == false || email != user.email) {
     throw new CustomError('wrong email or password entered', 400);
   }
-  if(user.student_id){
-
-  }
+ 
   cookieToken(user, res);
 });
 
@@ -239,6 +236,7 @@ exports.updateRole = BigPromise(async (req, res, next) => {
   });
 });
 
+
 exports.updateUserData = BigPromise(async(req,res,next)=>{
   const {id} = req.params;
 const updateUser = await User.updateOne({"_id":id},req.body)
@@ -262,6 +260,7 @@ exports.getAllUserRole = BigPromise(async (req, res, next) => {
 // get all the user for attendance
 exports.getAllUserForAttendance = BigPromise(async (req, res, next) => {
   const { section, department } = req.body;
+
 //   const user = await User.find({$pull:{"departments":{$in:[department,{"section":section}]}}});
   const user = await User.find({"departments":{$elemMatch:{"department":department,"section":section}}}).populate({  path: "departments.department" })
 //   .populate({ path: "userId", populate: { path: "departments.department" } })

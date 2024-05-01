@@ -3,12 +3,14 @@ const Payment = require("../models/payment")
 const express = require("express");
 const app = express();
 const stripe = require("stripe")(
-  process.env.STRIPT_ID
+  "sk_test_51MbnZVSJHHXXNgLXlV6jBeCNuwzdZ3SsPrsTAKnndxcYHbkQT4vTtkXp6Ax5Nq4muNvrMhPAQvgjNTDKsuXONSdB00Baei0TdI"
 );
+
 
 exports.paymentcollegefree = BigPromise(async (req, res, next) => {
   // const { amount } = req.body;
   const {id} = req.params
+  console.log(`"${process.env.STRIPT_ID}"`)
   const payment = await Payment.findOne({"_id":id})
   if(payment){
   const session = await stripe.checkout.sessions.create({
@@ -25,16 +27,20 @@ exports.paymentcollegefree = BigPromise(async (req, res, next) => {
       },
     ],
     mode: "payment",
-    success_url: `https://school-management-system-frontend-rosy.vercel.app/payment/pay/${id}/success`,
-    cancel_url: `https://school-management-system-frontend-rosy.vercel.app/pay/${id}/cancel`,
+    success_url: `http://localhost:3000/payment/pay/${id}/success`,
+    cancel_url: `http://localhost:3000/pay/${id}/cancel`,
   });
-  const addingID = await Payment.findByIdAndUpdate({"_id":id},{"paymentId":session.id})
+  console.log( session )
+  const addingID = await Payment.findOne({"_id":id})
+  addingID.paymentId = session.id
+  addingID.save()
+  console.log(addingID)
   res.status(200).json({
     success: true,
     session,
   });
   }
-  throw new CustomError("Fake id Entered", 400);
+ 
   // return next(new CustomError("fake id entered", 400));
   
 });
@@ -56,8 +62,9 @@ let ispaid = null
 ispaid = false
  
   }
+  console.log(ispaid)
   const pay =  await Payment.updateOne({"_id":id},{"ispaid":ispaid})
-  console.log(pay)
+  // console.log(pay)
   res.status(200).json({
     success: true,
     ispaid:ispaid,
@@ -65,7 +72,7 @@ ispaid = false
 
 })
 
-// cs_test_a1aOkTwJuMfRTJIhLxKBSp31yloPs9OxK1YHU7dFWImomojkrB3ufVDXr5
+
 
 
 exports.addNewPayment = BigPromise(async (req, res, next) => {
