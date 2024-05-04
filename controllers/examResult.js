@@ -54,3 +54,13 @@ exports.updateMarks = BigPromise(async (req, res, next) => {
     updatedMarks,
   });
 });
+
+
+exports.getLecturerAddedData = BigPromise(async (req,res,next)=>{
+  const id = req.user._id
+const result = await ExamResult.find({lectureId:id}).populate('userId')
+res.status(200).json({
+  success:true,
+  result
+})
+})

@@ -126,3 +126,17 @@ exports.findPaymentList = BigPromise(async (req, res, next) => {
         paymentPendingCount
       });
       })
+
+      
+      exports.findPaymentsLecturer = BigPromise(async (req, res, next) => {
+      
+        // const lid = req.user.id
+        // const newPayment = await Payment.create({sid,lid,amount,lastDay,description,title});
+        const id = req.user._id
+        const paymentList = await Payment.find({lid:id}).populate("sid");
+        res.status(200).json({
+          success: true,
+         paymentList
+        });
+        })
+      
